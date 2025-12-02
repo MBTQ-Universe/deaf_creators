@@ -1,0 +1,197 @@
+name: Creator Payment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      payment_type:
+        description: "Type of payment run"
+        required: true
+        type: choice
+        options:
+          - royalties
+          - milestone
+          - bonus
+          - refund
+      period:
+        description: "Payment period (YYYY-MM)"
+        required: false
+        type: string
+        default: ""
+      creator_id:
+        description: "Specific creator ID (leave empty for batch)"
+        required: false
+        type: string
+        default: ""
+  schedule:
+    # Run monthly royalty payments on the 1st at 00:00 UTC
+    - cron: "0 0 1 * *"
+
+env:
+  PAYMENT_BATCH_SIZE: 100
+
+jobs:
+  calculate-payments:
+    name: Calculate Payments
+    runs-on: ubuntu-latest
+    outputs:
+      payment_count: ${{ steps.calculate.outputs.count }}
+      total_amount: ${{ steps.calculate.outputs.total }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Calculate payment amounts
+        id: calculate
+        run: |
+          echo "Calculating ${{ inputs.payment_type || 'royalties' }} payments..."
+          PERIOD="${{ inputs.period || '' }}"
+          if [ -z "$PERIOD" ]; then
+            PERIOD=$(date -d "last month" +%Y-%m)
+          fi
+          echo "Payment period: $PERIOD"
+          
+          # In production: call API to calculate payments
+          # Example response handling:
+          # response=$(curl -s "${{ secrets.API_URL }}/payments/calculate" \
+          #   -H "Authorization: Bearer ${{ secrets.API_SECRET_KEY }}" \
+          #   -H "Content-Type: application/json" \
+          #   -d '{"period": "'$PERIOD'", "type": "${{ inputs.payment_type || 'royalties' }}"}')
+          
+          # Mock values for demonstration
+          echo "count=50" >> $GITHUB_OUTPUT
+          echo "total=25000" >> $GITHUB_OUTPUT
+
+  validate-payments:
+    name: Validate Payment Calculations
+    runs-on: ubuntu-latest
+    needs: calculate-payments
+    steps:
+      - name: Validate payment data
+        run: |
+          echo "Validating ${{ needs.calculate-payments.outputs.payment_count }} payments..."
+          echo "Total amount: $${{ needs.calculate-payments.outputs.total_amount }}"
+          
+          # Validation checks:
+          # - Verify calculations match expected revenue share percentages
+          # - Check for anomalies (unusually high/low payments)
+          # - Verify creator accounts are in good standing
+          # - Ensure minimum payout thresholds are met
+
+      - name: Generate audit report
+        run: |
+          echo "Generating payment audit report..."
+          # Create detailed audit log for compliance
+
+  process-payments:
+    name: Process Payments
+    runs-on: ubuntu-latest
+    needs: [calculate-payments, validate-payments]
+    environment: production
+    steps:
+      - name: Initialize payment batch
+        run: |
+          echo "Initializing payment batch..."
+          echo "Processing ${{ needs.calculate-payments.outputs.payment_count }} payments"
+
+      - name: Process Stripe payments
+        run: |
+          echo "Processing Stripe payouts..."
+          # In production:
+          # curl -X POST "${{ secrets.API_URL }}/payments/stripe/batch" \
+          #   -H "Authorization: Bearer ${{ secrets.API_SECRET_KEY }}" \
+          #   -H "Content-Type: application/json" \
+          #   -d '{"batch_id": "${{ github.run_id }}"}'
+
+      - name: Process PayPal payments
+        run: |
+          echo "Processing PayPal payouts..."
+          # In production:
+          # curl -X POST "${{ secrets.API_URL }}/payments/paypal/batch" \
+          #   -H "Authorization: Bearer ${{ secrets.API_SECRET_KEY }}" \
+          #   -H "Content-Type: application/json" \
+          #   -d '{"batch_id": "${{ github.run_id }}"}'
+
+      - name: Record payment transactions
+        run: |
+          echo "Recording payment transactions..."
+          # Store transaction records for accounting
+
+  notify-creators:
+    name: Notify Creators
+    runs-on: ubuntu-latest
+    needs: process-payments
+    steps:
+      - name: Send payment confirmations
+        run: |
+          echo "Sending payment confirmation emails..."
+          # In production: trigger email service
+          # curl -X POST "${{ secrets.API_URL }}/notifications/payment-complete" \
+          #   -H "Authorization: Bearer ${{ secrets.API_SECRET_KEY }}" \
+          #   -H "Content-Type: application/json" \
+          #   -d '{"batch_id": "${{ github.run_id }}"}'
+
+      - name: Update creator dashboards
+        run: |
+          echo "Updating creator dashboard earnings..."
+          # Trigger dashboard data refresh
+
+  royalty-distribution:
+    name: Calculate Royalty Distribution
+    runs-on: ubuntu-latest
+    if: inputs.payment_type == 'royalties' || github.event_name == 'schedule'
+    steps:
+      - name: Calculate scene-based royalties
+        run: |
+          echo "Calculating scene-based royalty distribution..."
+          # For multi-contributor projects:
+          # - Identify all contributors to each video
+          # - Calculate contribution percentages based on scenes
+          # - Distribute revenue accordingly
+          
+          # Example calculation logic:
+          # Total video revenue: $1000
+          # Creator A: 60% of scenes = $600
+          # Creator B: 30% of scenes = $300
+          # Platform fee: 10% = $100
+
+      - name: Calculate revenue share
+        run: |
+          echo "Calculating platform revenue share..."
+          # Revenue distribution:
+          # - Creator share (configurable, e.g., 70%)
+          # - Platform fee (e.g., 20%)
+          # - Processing fees (e.g., 3%)
+          # - Reserve fund (e.g., 7%)
+
+  generate-reports:
+    name: Generate Payment Reports
+    runs-on: ubuntu-latest
+    needs: [process-payments, notify-creators]
+    steps:
+      - name: Generate earnings breakdown
+        run: |
+          echo "Generating detailed earnings breakdown..."
+          # Create per-creator reports with:
+          # - Per-video earnings
+          # - View counts and revenue share
+          # - Royalty calculations
+          # - Tax withholding information
+
+      - name: Generate admin reports
+        run: |
+          echo "Generating admin audit reports..."
+          # Create administrative reports for:
+          # - Total disbursements
+          # - Failed payments
+          # - Pending payments
+          # - Revenue analytics
+
+      - name: Archive reports
+        run: |
+          echo "Archiving payment reports..."
+          # Store reports for compliance and auditing

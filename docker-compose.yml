@@ -1,0 +1,107 @@
+version: "3.8"
+
+services:
+  # Next.js Frontend Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        - FLASK_API_URL=${FLASK_API_URL:-http://api:5000}
+        - MUX_TOKEN_ID=${MUX_TOKEN_ID}
+        - MUX_TOKEN_SECRET=${MUX_TOKEN_SECRET}
+        - MUX_WEBHOOK_SECRET=${MUX_WEBHOOK_SECRET}
+        - API_SECRET_KEY=${API_SECRET_KEY}
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - FLASK_API_URL=${FLASK_API_URL:-http://api:5000}
+    depends_on:
+      - api
+    networks:
+      - deaf-creator-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API (Flask placeholder - implement separately)
+  api:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./api:/app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
+    networks:
+      - deaf-creator-network
+    restart: unless-stopped
+    command: echo "API service placeholder - implement Flask backend"
+
+  # Video Processing Worker (placeholder)
+  video-worker:
+    image: jrottenberg/ffmpeg:4.4-alpine
+    volumes:
+      - video-uploads:/uploads
+      - video-processed:/processed
+    networks:
+      - deaf-creator-network
+    restart: unless-stopped
+    command: echo "Video worker placeholder - implement video processing pipeline"
+
+  # Redis for caching and job queues
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - deaf-creator-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-deaf_creator}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - POSTGRES_DB=${POSTGRES_DB:-deaf_creator_db}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - deaf-creator-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-deaf_creator}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  deaf-creator-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  video-uploads:
+  video-processed:

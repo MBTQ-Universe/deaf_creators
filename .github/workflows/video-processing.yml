@@ -27,6 +27,10 @@ on:
           - 1080p
           - 4k
 
+# Minimal permissions by default
+permissions:
+  contents: read
+
 env:
   FFMPEG_VERSION: "6.0"
 
@@ -34,6 +38,7 @@ jobs:
   validate:
     name: Validate Video Request
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       valid: ${{ steps.validate.outputs.valid }}
       video_metadata: ${{ steps.validate.outputs.metadata }}
@@ -51,6 +56,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate
     if: needs.validate.outputs.valid == 'true'
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -110,6 +117,7 @@ jobs:
     name: Generate Captions (Accessibility)
     runs-on: ubuntu-latest
     needs: process
+    permissions: {}
     steps:
       - name: Generate ASL-friendly captions
         run: |

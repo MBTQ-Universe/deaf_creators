@@ -26,6 +26,10 @@ on:
     # Run monthly royalty payments on the 1st at 00:00 UTC
     - cron: "0 0 1 * *"
 
+# Minimal permissions by default
+permissions:
+  contents: read
+
 env:
   PAYMENT_BATCH_SIZE: 100
 
@@ -33,6 +37,8 @@ jobs:
   calculate-payments:
     name: Calculate Payments
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       payment_count: ${{ steps.calculate.outputs.count }}
       total_amount: ${{ steps.calculate.outputs.total }}
@@ -70,6 +76,7 @@ jobs:
     name: Validate Payment Calculations
     runs-on: ubuntu-latest
     needs: calculate-payments
+    permissions: {}
     steps:
       - name: Validate payment data
         run: |
@@ -92,6 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [calculate-payments, validate-payments]
     environment: production
+    permissions: {}
     steps:
       - name: Initialize payment batch
         run: |
@@ -125,6 +133,7 @@ jobs:
     name: Notify Creators
     runs-on: ubuntu-latest
     needs: process-payments
+    permissions: {}
     steps:
       - name: Send payment confirmations
         run: |
@@ -144,6 +153,7 @@ jobs:
     name: Calculate Royalty Distribution
     runs-on: ubuntu-latest
     if: inputs.payment_type == 'royalties' || github.event_name == 'schedule'
+    permissions: {}
     steps:
       - name: Calculate scene-based royalties
         run: |
@@ -172,6 +182,7 @@ jobs:
     name: Generate Payment Reports
     runs-on: ubuntu-latest
     needs: [process-payments, notify-creators]
+    permissions: {}
     steps:
       - name: Generate earnings breakdown
         run: |

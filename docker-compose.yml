@@ -47,7 +47,10 @@ services:
     networks:
       - deaf-creator-network
     restart: unless-stopped
-    command: echo "API service placeholder - implement Flask backend"
+    # Placeholder: keep container running until Flask backend is implemented
+    command: tail -f /dev/null
+    profiles:
+      - full
 
   # Video Processing Worker (placeholder)
   video-worker:
@@ -58,7 +61,10 @@ services:
     networks:
       - deaf-creator-network
     restart: unless-stopped
-    command: echo "Video worker placeholder - implement video processing pipeline"
+    # Placeholder: keep container running until video worker is implemented
+    command: tail -f /dev/null
+    profiles:
+      - full
 
   # Redis for caching and job queues
   redis:

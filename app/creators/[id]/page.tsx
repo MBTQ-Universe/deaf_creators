@@ -18,6 +18,17 @@ import {
   Play,
 } from "lucide-react"
 
+// Generate static paths for dynamic routes
+export async function generateStaticParams() {
+  // For static export, we'll generate a few example creator pages
+  // In production, you would fetch this from your API
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ]
+}
+
 export default function CreatorProfilePage({ params }: { params: { id: string } }) {
   // In a real app, you would fetch the creator data based on the ID
   // For this example, we'll use mock data

@@ -1,9 +1,14 @@
+"use client"
+
+import { Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { DashboardShell } from "@/components/dashboard-shell"
 import { SubscriptionCheckout } from "@/components/subscription-checkout"
 
-export default function CheckoutPage({ searchParams }: { searchParams: { plan?: string; cycle?: string } }) {
-  const plan = searchParams.plan || "creator-pro"
-  const cycle = searchParams.cycle === "yearly" ? "yearly" : "monthly"
+function CheckoutContent() {
+  const searchParams = useSearchParams()
+  const plan = searchParams.get("plan") || "creator-pro"
+  const cycle = searchParams.get("cycle") === "yearly" ? "yearly" : "monthly"
 
   // Map plan names and prices
   const planDetails = {
@@ -37,13 +42,21 @@ export default function CheckoutPage({ searchParams }: { searchParams: { plan?: 
   const planPrice = planDetails[plan as keyof typeof planDetails]?.price || 39.99
 
   return (
+    <SubscriptionCheckout
+      planName={planName}
+      planPrice={planPrice}
+      billingCycle={cycle as "monthly" | "yearly"}
+      trialDays={7}
+    />
+  )
+}
+
+export default function CheckoutPage() {
+  return (
     <DashboardShell>
-      <SubscriptionCheckout
-        planName={planName}
-        planPrice={planPrice}
-        billingCycle={cycle as "monthly" | "yearly"}
-        trialDays={7}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CheckoutContent />
+      </Suspense>
     </DashboardShell>
   )
 }

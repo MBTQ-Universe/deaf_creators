@@ -1,0 +1,131 @@
+name: Video Processing Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: "Video ID to process"
+        required: true
+        type: string
+      processing_type:
+        description: "Type of processing"
+        required: true
+        type: choice
+        options:
+          - transcode
+          - thumbnail
+          - analyze
+          - full
+      quality:
+        description: "Output quality"
+        required: false
+        type: choice
+        default: "1080p"
+        options:
+          - 480p
+          - 720p
+          - 1080p
+          - 4k
+
+# Minimal permissions by default
+permissions:
+  contents: read
+
+env:
+  FFMPEG_VERSION: "6.0"
+
+jobs:
+  validate:
+    name: Validate Video Request
+    runs-on: ubuntu-latest
+    permissions: {}
+    outputs:
+      valid: ${{ steps.validate.outputs.valid }}
+      video_metadata: ${{ steps.validate.outputs.metadata }}
+    steps:
+      - name: Validate video exists
+        id: validate
+        run: |
+          echo "Validating video ${{ inputs.video_id }}..."
+          # In production, this would call your API to validate the video
+          echo "valid=true" >> $GITHUB_OUTPUT
+          echo "metadata={\"id\":\"${{ inputs.video_id }}\",\"type\":\"${{ inputs.processing_type }}\"}" >> $GITHUB_OUTPUT
+
+  process:
+    name: Process Video
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.valid == 'true'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download video from storage
+        run: |
+          echo "Downloading video ${{ inputs.video_id }}..."
+          # In production: download from S3, GCS, Azure Blob, or other storage
+          # aws s3 cp s3://videos/${{ inputs.video_id }} ./input.mp4
+
+      - name: Transcode video
+        if: inputs.processing_type == 'transcode' || inputs.processing_type == 'full'
+        run: |
+          echo "Transcoding video to ${{ inputs.quality }}..."
+          # FFmpeg transcoding command
+          # ffmpeg -i input.mp4 -c:v libx264 -crf 23 -preset medium \
+          #   -c:a aac -b:a 128k \
+          #   -vf "scale=-2:${{ inputs.quality == '4k' && '2160' || inputs.quality == '1080p' && '1080' || inputs.quality == '720p' && '720' || '480' }}" \
+          #   -movflags +faststart \
+          #   output_${{ inputs.quality }}.mp4
+
+      - name: Generate thumbnails
+        if: inputs.processing_type == 'thumbnail' || inputs.processing_type == 'full'
+        run: |
+          echo "Generating thumbnails..."
+          # ffmpeg -i input.mp4 -ss 00:00:01 -vframes 1 thumbnail.jpg
+          # ffmpeg -i input.mp4 -vf "fps=1/10,scale=320:-1" thumbnails_%03d.jpg
+
+      - name: Generate video metadata
+        if: inputs.processing_type == 'analyze' || inputs.processing_type == 'full'
+        run: |
+          echo "Analyzing video metadata..."
+          # ffprobe -v quiet -print_format json -show_format -show_streams input.mp4 > metadata.json
+
+      - name: Upload processed files
+        run: |
+          echo "Uploading processed files..."
+          # In production: upload to storage service
+          # aws s3 cp ./output_${{ inputs.quality }}.mp4 s3://videos/processed/${{ inputs.video_id }}/
+
+      - name: Notify completion
+        run: |
+          echo "Video processing completed for ${{ inputs.video_id }}"
+          # In production: call webhook or update database
+          # curl -X POST "${{ secrets.API_URL }}/videos/${{ inputs.video_id }}/status" \
+          #   -H "Authorization: Bearer ${{ secrets.API_SECRET_KEY }}" \
+          #   -H "Content-Type: application/json" \
+          #   -d '{"status": "ready", "quality": "${{ inputs.quality }}"}'
+
+  generate-captions:
+    name: Generate Captions (Accessibility)
+    runs-on: ubuntu-latest
+    needs: process
+    permissions: {}
+    steps:
+      - name: Generate ASL-friendly captions
+        run: |
+          echo "Generating captions for accessibility..."
+          # In production: use AI transcription service
+          # This ensures deaf creators have accessible content
+
+      - name: Upload captions
+        run: |
+          echo "Uploading caption files..."
+          # Upload VTT/SRT files to storage

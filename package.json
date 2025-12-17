@@ -53,6 +53,7 @@
     "react-day-picker": "latest",
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
+    "react-is": "^19.2.3",
     "react-resizable-panels": "^2.1.7",
     "recharts": "latest",
     "socket.io-client": "^4.8.1",

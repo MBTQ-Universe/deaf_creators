@@ -13,6 +13,8 @@ const nextConfig = {
   },
   // Disable features not supported in static export
   trailingSlash: true,
+  // Skip API routes during export
+  skipTrailingSlashRedirect: true,
 }
 
 export default nextConfig

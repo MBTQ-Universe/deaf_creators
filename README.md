@@ -1,30 +1,50 @@
 # Deaf Creator Platform (Multi-Tenants)
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/pinksync/v0-deaf-creators)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/hYqkr5q5UaL)
+A modern platform for deaf content creators and influencers.
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+This platform provides deaf creators with tools to manage their content, connect with their audience, and grow their influence.
 
-## Deployment
+## Features
 
-Your project is live at:
+- Content Management System
+- Analytics Dashboard
+- Monetization Tools
+- Community Building Features
+- Accessibility-First Design
+- AI Sign Language Assistant
+- B-Roll Collection Library
 
-**[https://vercel.com/pinksync/v0-deaf-creators](https://vercel.com/pinksync/v0-deaf-creators)**
+## Getting Started
 
-## Build your app
+### Prerequisites
 
-Continue building your app on:
+- Node.js 18 or higher
+- pnpm (recommended) or npm
 
-**[https://v0.dev/chat/projects/hYqkr5q5UaL](https://v0.dev/chat/projects/hYqkr5q5UaL)**
+### Installation
 
-## How It Works
+```bash
+# Install dependencies
+pnpm install
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+The application will be available at `http://localhost:3000`
+
+## Technology Stack
+
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- Radix UI Components

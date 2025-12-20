@@ -9,8 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "DeafCreator | Platform for Deaf Influencers",
-  description: "The complete platform for deaf content creators and influencers",
-    generator: 'v0.dev'
+  description: "The complete platform for deaf content creators and influencers"
 }
 
 export default function RootLayout({

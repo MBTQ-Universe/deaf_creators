@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "mappings": {
+    "content_creation": {
+      "semantic": "creating",
+      "signs": ["CREATE", "NEW", "CONTENT"],
+      "confidence_threshold": 0.7
+    },
+    "platform_guidance": {
+      "semantic": "guiding",
+      "signs": ["GUIDE", "HELP", "SHOW"],
+      "confidence_threshold": 0.7
+    },
+    "question": {
+      "semantic": "questioning",
+      "signs": ["WHAT", "WHY", "HOW"],
+      "confidence_threshold": 0.8
+    },
+    "request_analysis": {
+      "semantic": "analyzing",
+      "signs": ["CHECK", "REVIEW", "ANALYZE"],
+      "confidence_threshold": 0.75
+    },
+    "improvement": {
+      "semantic": "improving",
+      "signs": ["BETTER", "IMPROVE", "UPGRADE"],
+      "confidence_threshold": 0.7
+    }
+  }
+}

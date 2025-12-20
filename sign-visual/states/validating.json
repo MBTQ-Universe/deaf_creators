@@ -1,0 +1,14 @@
+{
+  "state": "validating",
+  "visual": {
+    "pose": "deliberate",
+    "expression": "cautious",
+    "movement": "measured"
+  },
+  "semantic": {
+    "meaning": "Checking accuracy",
+    "intent": "verification",
+    "confidence": 0.82
+  },
+  "duration": "short"
+}

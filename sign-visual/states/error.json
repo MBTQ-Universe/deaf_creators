@@ -1,0 +1,15 @@
+{
+  "state": "error",
+  "visual": {
+    "pose": "alert",
+    "expression": "clear_warning",
+    "movement": "emphatic"
+  },
+  "semantic": {
+    "meaning": "Problem detected",
+    "intent": "warning",
+    "confidence": 1.0
+  },
+  "duration": "persistent",
+  "priority": "high"
+}

@@ -1,0 +1,14 @@
+{
+  "state": "completed",
+  "visual": {
+    "pose": "satisfied",
+    "expression": "accomplished",
+    "movement": "conclusive"
+  },
+  "semantic": {
+    "meaning": "Task finished",
+    "intent": "completion",
+    "confidence": 1.0
+  },
+  "duration": "brief"
+}

@@ -1,0 +1,14 @@
+{
+  "state": "executing",
+  "visual": {
+    "pose": "active",
+    "expression": "determined",
+    "movement": "purposeful"
+  },
+  "semantic": {
+    "meaning": "Taking action",
+    "intent": "execution",
+    "confidence": 0.95
+  },
+  "duration": "variable"
+}

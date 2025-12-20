@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "mappings": {
+    "processing_input": {
+      "semantic": "receiving",
+      "signs": ["RECEIVE", "UNDERSTAND", "PROCESS"],
+      "state": "processing"
+    },
+    "validating_data": {
+      "semantic": "checking",
+      "signs": ["CHECK", "VERIFY", "CONFIRM"],
+      "state": "validating"
+    },
+    "executing_task": {
+      "semantic": "doing",
+      "signs": ["DO", "WORK", "ACT"],
+      "state": "executing"
+    },
+    "fetching_data": {
+      "semantic": "fetching",
+      "signs": ["GET", "FETCH", "RETRIEVE"],
+      "state": "executing"
+    },
+    "generating_response": {
+      "semantic": "creating",
+      "signs": ["CREATE", "GENERATE", "MAKE"],
+      "state": "processing"
+    },
+    "waiting_input": {
+      "semantic": "waiting",
+      "signs": ["WAIT", "NEED", "INPUT"],
+      "state": "idle",
+      "requires_user": true
+    },
+    "error_occurred": {
+      "semantic": "problem",
+      "signs": ["PROBLEM", "ERROR", "STOP"],
+      "state": "error",
+      "priority": "critical"
+    }
+  }
+}

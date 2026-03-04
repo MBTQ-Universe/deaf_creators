@@ -65,7 +65,7 @@ jobs:
       - name: Setup FFmpeg
         uses: FedericoCarboni/setup-ffmpeg@v3
         with:
-          ffmpeg-version: release
+          ffmpeg-version: ${{ env.FFMPEG_VERSION }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download video from storage

@@ -144,7 +144,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Run npm audit
-        run: npm audit --audit-level=high || echo "::warning::npm audit found vulnerabilities - review before production deployment"
+        run: npm audit --audit-level=critical
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master

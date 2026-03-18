@@ -36,11 +36,17 @@ export class StateMachine {
   }
 
   emit(partialEvent: Partial<StateEvent> & Pick<StateEvent, 'actor' | 'state'>) {
-    this.currentState = {
-      ...this.currentState,
-      ...partialEvent,
-      timestamp: Date.now()
-    }
+    const nextState: StateEvent = { ...this.currentState }
+
+    (Object.keys(partialEvent) as (keyof StateEvent)[]).forEach((key) => {
+      const value = partialEvent[key]
+      if (value !== undefined) {
+        ;(nextState as any)[key] = value
+      }
+    })
+
+    nextState.timestamp = Date.now()
+    this.currentState = nextState
     
     this.notifyListeners()
   }

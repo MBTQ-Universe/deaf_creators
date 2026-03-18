@@ -26,7 +26,19 @@ export function SignerPanel({ defaultDocked = true, defaultSize = 'medium' }: Si
     return unsubscribe
   }, [])
 
-  if (!isVisible) return null
+  if (!isVisible) {
+    return (
+      <Button
+        className="fixed bottom-4 right-4 z-50 shadow-lg"
+        size="sm"
+        variant="default"
+        onClick={() => setIsVisible(true)}
+        aria-label="Open Sign Visual panel"
+      >
+        Sign Visual
+      </Button>
+    )
+  }
 
   const sizeClasses = {
     small: 'w-64 h-48',

@@ -25,6 +25,41 @@
       "semantic": "improving",
       "signs": ["BETTER", "IMPROVE", "UPGRADE"],
       "confidence_threshold": 0.7
+    },
+    "magician_core": {
+      "semantic": "core_operation",
+      "signs": ["MAGICIAN", "CORE", "ENGINE"],
+      "confidence_threshold": 0.75
+    },
+    "validator_success": {
+      "semantic": "validation_pass",
+      "signs": ["VALID", "PASS", "OK"],
+      "confidence_threshold": 0.8
+    },
+    "validator_failure": {
+      "semantic": "validation_fail",
+      "signs": ["INVALID", "FAIL", "REJECT"],
+      "confidence_threshold": 0.8
+    },
+    "compliance_check": {
+      "semantic": "compliance_checking",
+      "signs": ["COMPLIANCE", "CHECK", "POLICY"],
+      "confidence_threshold": 0.75
+    },
+    "compliance_violation": {
+      "semantic": "compliance_violation",
+      "signs": ["VIOLATION", "BREACH", "BLOCK"],
+      "confidence_threshold": 0.8
+    },
+    "system_error": {
+      "semantic": "system_error",
+      "signs": ["ERROR", "SYSTEM", "FAILURE"],
+      "confidence_threshold": 0.8
+    },
+    "user_error": {
+      "semantic": "user_error",
+      "signs": ["MISTAKE", "USER", "INPUT_ERROR"],
+      "confidence_threshold": 0.8
     }
   }
 }

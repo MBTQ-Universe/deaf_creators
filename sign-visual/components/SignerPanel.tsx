@@ -94,7 +94,7 @@ export function SignerPanel({ defaultDocked = true, defaultSize = 'medium' }: Si
       {/* Footer */}
       <div className="p-2 bg-muted/30 border-t text-center">
         <p className="text-xs text-muted-foreground">
-          {state.requiresUser ? 'Awaiting input' : `${state.state}`}
+          {state.requiresUser && 'Awaiting input'}
         </p>
       </div>
     </Card>

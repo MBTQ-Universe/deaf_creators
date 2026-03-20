@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import intentMapData from '../semantics/intent.map.json'
 import systemMapData from '../semantics/system.map.json'
 

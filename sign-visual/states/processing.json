@@ -1,0 +1,14 @@
+{
+  "state": "processing",
+  "visual": {
+    "pose": "thinking",
+    "expression": "concentrated",
+    "movement": "rhythmic"
+  },
+  "semantic": {
+    "meaning": "Analyzing information",
+    "intent": "processing",
+    "confidence": 0.85
+  },
+  "duration": "variable"
+}

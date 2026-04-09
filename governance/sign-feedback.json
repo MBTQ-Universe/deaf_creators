@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "last_review": "2025-12-20",
+  "reviewers": [],
+  "feedback": [],
+  "pending_reviews": [
+    {
+      "id": "initial-semantic-mappings",
+      "status": "pending",
+      "description": "Initial semantic mappings for intent and system actions",
+      "submitted": "2025-12-20",
+      "files_affected": [
+        "sign-visual/semantics/intent.map.json",
+        "sign-visual/semantics/system.map.json"
+      ]
+    }
+  ],
+  "approved_semantics": []
+}

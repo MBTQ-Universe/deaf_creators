@@ -1,0 +1,14 @@
+{
+  "state": "idle",
+  "visual": {
+    "pose": "neutral",
+    "expression": "calm",
+    "movement": "minimal"
+  },
+  "semantic": {
+    "meaning": "Ready and waiting",
+    "intent": "available",
+    "confidence": 1.0
+  },
+  "duration": "indefinite"
+}

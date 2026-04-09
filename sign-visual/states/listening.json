@@ -1,0 +1,14 @@
+{
+  "state": "listening",
+  "visual": {
+    "pose": "attentive",
+    "expression": "focused",
+    "movement": "subtle"
+  },
+  "semantic": {
+    "meaning": "Receiving input",
+    "intent": "understanding",
+    "confidence": 0.9
+  },
+  "duration": "variable"
+}
